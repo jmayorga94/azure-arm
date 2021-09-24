@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "sqlServerName": {
+            "value": "sql-workspace"
+        },
+        "sqlDbName": {
+            "value": "sqldb-workspacemgmt"
+        },
+        "adminPassword": {
+            "value": "sR9n@z!wT7d2"
+        },
+        "adminUser": {
+            "value": "adminUser"
+        },
+        "vnetName": {
+            "value": "vnet-dev-eastus-001"
+        },
+        "subnetName": {
+            "value": "snet-dev-002"
+        },
+        "privateEndpointName": {
+            "value": "pl-workspacedb"
+        }
+
+    }
+}
