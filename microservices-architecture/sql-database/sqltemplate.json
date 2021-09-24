@@ -90,7 +90,7 @@
                   "endIpAddress": "0.0.0.0"
               }
           }
-     /*Add developers public IPs    {
+     /*Add developers public IPs for public access  to database   {
               "type": "firewallRules",
               "apiVersion": "2014-04-01",
               "dependsOn": [
@@ -191,7 +191,7 @@
       "properties": {
         "privateDnsZoneConfigs": [
           {
-            "name": "config0001",
+            "name": "workspacesqlconfig",
             "properties": {
               "privateDnsZoneId": "[resourceId('Microsoft.Network/privateDnsZones', variables('privateDnsZoneName'))]"
             }
