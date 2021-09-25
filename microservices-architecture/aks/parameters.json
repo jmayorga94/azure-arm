@@ -15,10 +15,13 @@
             "value": "snet-dev-001"
         },
         "egressIpName": {
-            "value": "pip-aks-dev-workspacemngmt"
+            "value": "pip-aks-dev-workspacemngmt-001"
         },
         "resourceGroupName": {
-            "value": "rg-workspacemgmt-dev-001"
+            "value": "rg-workspacemgmt-dev"
+        },
+        "resourceGroupVnet": {
+            "value": "rg-shared-dev"
         },
         "dnsPrefix": {
             "value":"-dns"

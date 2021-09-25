@@ -1,10 +1,10 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {
+   "parameters": {
       "clusterName": {
         "type": "string",
-        "defaultValue": "aks-ea-workspacemngmt",
+        "defaultValue": "aks-ea-workspacemngmt-001",
         "metadata": {
           "description": "The name of the Managed Cluster resource."
         }
@@ -24,8 +24,7 @@
         }
       },
       "vnetName":{
-          "type": "string",
-          "defaultValue": "/subscriptions/[concat(parameters('subscriptionId')/resourceGroups/rg-workspacemgmt-dev-001/providers/Microsoft.Network/virtualNetworks/vnet-dev-eastus-001"
+          "type": "string"
         },
       "subnetName": {
               "type": "string"
@@ -76,87 +75,77 @@
         "metadata": {
           "description": "The type of operating system."
         }
+      },
+      "resourceGroupVnet": {
+        "type": "string",
+        "metadata": {
+          "description": "The resource group where the vnet is"
+        }
       }
     },
     "variables": {
-          "subnetId": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+          "subnetId": "[resourceId(parameters('resourceGroupVnet'),'Microsoft.Network/virtualNetworks/subnets',parameters('vnetName'), parameters('subnetName'))]",
           "networkContributorRole": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]"
       },
     "resources": [
       {
-              "name": "[parameters('egressIpName')]",
-              "type": "Microsoft.Network/publicIPAddresses",
-              "apiVersion": "2020-04-01",
-              "location": "[parameters('location')]",
-              "sku": {
-                  "name": "Standard"
-              },
-              "properties": {
-                  "publicIPAllocationMethod": "Static"
-              }
-      },     
+  "name": "[parameters('clusterName')]",
+  "type": "Microsoft.ContainerService/managedClusters",
+  "apiVersion": "2021-03-01",
+  "location": "[parameters('location')]",
+  "tags": "[parameters('resourceTags')]",
+  "properties": {
+    "kubernetesVersion": "1.20.9",
+    "tags": "[parameters('resourceTags')]",
+     "dnsPrefix": "[concat(parameters('clusterName'), parameters('dnsPrefix'))]",
+    "agentPoolProfiles": [
       {
-        "type": "Microsoft.ContainerService/managedClusters",
-        "apiVersion": "2020-06-01",
-        "name": "[parameters('clusterName')]",
-        "location": "[parameters('location')]",
-        "dependsOn": [
-                  "[resourceId('Microsoft.Network/publicIPAddresses', parameters('egressIpName'))]"
-              ],
-        "properties": {
-          "kubernetesVersion": "1.20.9",
-          "tags": "[parameters('resourceTags')]",
-          "dnsPrefix": "[concat(parameters('clusterName'), parameters('dnsPrefix'))]",
-          "agentPoolProfiles": [
-            {
-              "name": "agentpool",
-              "osDiskSizeGB": "[parameters('osDiskSizeGB')]",
-              "kubeletDiskType": "OS",
-              "type": "VirtualMachineScaleSets",
-              "count": "[parameters('agentCount')]",
-              "vmSize": "[parameters('agentVMSize')]",
-              "vnetSubnetID":"[variables('subnetId')]",
-              "maxPods": 60,
-              "osType": "[parameters('osType')]",
-              "osSKU": "Ubuntu",
-              "mode": "System",
-              "storageProfile": "ManagedDisks",
-              "enableAutoScaling": false,
-              "enablePrivateCluster": false
-            }
-          ],
-          "servicePrincipalProfile": {
-                       "clientId": "msi"
-          },
-          "enableRBAC": true,
-           "networkProfile": {
-                      "networkPlugin": "azure",
-                      "loadBalancerSku": "Standard",
-                      "loadBalancerProfile": {
-                          "managedOutboundIPs": {
-                              "count": 1
-                          },
-                          "effectiveOutboundIPs": [
-                              {
-                                  "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('egressIpName'))]"
-                              }
-                          ]
-                      },
-                      "serviceCidr": "10.0.0.0/16",
-                      "dnsServiceIP": "10.0.0.10",
-                      "dockerBridgeCidr": "172.17.0.1/16",
-                      "outboundType": "loadBalancer"
-            }   
-        },
-        "identity": {
-            "type": "SystemAssigned"
-        }
-      },
-       {
+        "count": "[parameters('agentCount')]",
+        "vmSize": "[parameters('agentVMSize')]",
+        "osDiskSizeGB": "[parameters('osDiskSizeGB')]",
+        "osDiskType": "Ephemeral",
+        "kubeletDiskType": "OS",
+        "vnetSubnetID": "[variables('subnetId')]",
+        "maxPods": 60,
+        "osType": "[parameters('osType')]",
+        "osSKU": "Ubuntu",
+        "enableAutoScaling": false,
+        "type": "VirtualMachineScaleSets",
+        "mode": "System",
+        "orchestratorVersion": "1.20.9",
+        "enableNodePublicIP": true,
+        "nodeLabels": {},
+        "name":"agentpool"
+      }
+    ],
+    "enableRBAC": true,
+    "networkProfile": {
+      "networkPlugin": "azure",
+      "networkPolicy": "azure",
+      "serviceCidr": "10.0.0.0/16",
+      "dnsServiceIP": "10.0.0.10",
+      "dockerBridgeCidr": "172.17.0.1/16",
+      "outboundType": "loadBalancer",
+      "loadBalancerSku": "Standard"
+    },
+    "apiServerAccessProfile": {
+      "enablePrivateCluster": false
+    }
+  },
+  "identity":{
+      "type": "SystemAssigned"
+  },
+  "sku": {
+    "name": "Basic",
+    "tier": "Free"
+  },
+  "resources": [
+      {
               "type": "Microsoft.Resources/deployments",
               "name": "ClusterSubnetRoleAssignmentDeployment",
               "apiVersion": "2017-05-10",
-              "resourceGroup": "[parameters('resourceGroupName')]",
+              "resourceGroup": "[parameters('resourceGroupVnet')]",
+              "dependsOn":["[resourceId('Microsoft.ContainerService/managedClusters', parameters('clusterName'))]"],
               "properties": {
                   "mode": "Incremental",
                   "template": {
@@ -177,11 +166,8 @@
                   }
               }
           }
+  ]
+}
     ],
-    "outputs": {
-      "controlPlaneFQDN": {
-        "type": "string",
-        "value": "[reference(parameters('clusterName')).fqdn]"
-      }
-    }
-  }
+    "outputs": {}
+}
