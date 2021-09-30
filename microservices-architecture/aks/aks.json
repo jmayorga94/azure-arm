@@ -4,7 +4,7 @@
    "parameters": {
       "clusterName": {
         "type": "string",
-        "defaultValue": "aks-ea-workspacemngmt-001",
+        "defaultValue": "aks-ea-workspacemgmt-001",
         "metadata": {
           "description": "The name of the Managed Cluster resource."
         }

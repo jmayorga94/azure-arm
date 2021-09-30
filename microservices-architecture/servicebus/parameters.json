@@ -6,16 +6,16 @@
             "value": "sb-workspacemgmt"
         },
         "analizerQueueName": {
-            "value":"sbq-analizer" 
+            "value":"sbq-analizer-req" 
         },
         "orchestratorQueueName": {
-            "value":"sbq-orchestrator" 
+            "value":"sbq-orchestrator-req" 
         },
         "dataAccessQueueName": {
-            "value":"sbq-data" 
+            "value":"sbq-data-req" 
         },
         "cleanUpQueueName": {
-            "value":"sbq-cleanup" 
+            "value":"sbq-cleanup-req" 
         },
         "logsTopicName": {
             "value":"sbt-workspacelogs" 

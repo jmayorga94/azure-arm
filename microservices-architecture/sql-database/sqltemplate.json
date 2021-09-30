@@ -50,6 +50,12 @@
             "metadata": {
                 "description": "description"
             }
+        },
+        "resourceGroupVnet": {
+          "type": "string",
+          "metadata": {
+            "description": "description"
+          }
         }
     },
     "functions": [],
@@ -143,7 +149,7 @@
       ],
       "properties": {
         "subnet": {
-          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('vnetName'), variables('subnetName'))]"
+          "id":"[resourceId(parameters('resourceGroupVnet'),'Microsoft.Network/virtualNetworks/subnets',parameters('vnetName'), parameters('subnetName'))]"
         },
         "privateLinkServiceConnections": [
           {
@@ -176,7 +182,7 @@
       "properties": {
         "registrationEnabled": false,
         "virtualNetwork":{
-            "id": "[resourceId('Microsoft.Network/virtualNetworks', variables('vnetName'))]"
+            "id": "[resourceId(parameters('resourceGroupVnet'),'Microsoft.Network/virtualNetworks', variables('vnetName'))]"
         }
       }
     },

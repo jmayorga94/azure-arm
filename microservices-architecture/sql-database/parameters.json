@@ -20,6 +20,9 @@
         "subnetName": {
             "value": "snet-dev-002"
         },
+        "resourceGroupVnet": {
+            "value": "rg-shared-dev"
+        },
         "privateEndpointName": {
             "value": "pl-workspacedb"
         }
