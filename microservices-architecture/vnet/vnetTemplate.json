@@ -1,0 +1,101 @@
+
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "type": "String",
+            "metadata": {
+                "description": "virtual network name"
+            }
+        },
+        "resourceTags": {
+            "type": "object"
+        },
+        "subnetValue": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the subnet"
+            }
+        },
+        "environmentPrefix": {
+            "type": "string",
+            "metadata": {
+                "decription":"Prefix of the environment"
+            }
+        },
+        "vnetaddresSpacesValue": {
+            "type": "string",
+            "metadata": {
+                "description": "IP address space for virtual network"
+            }
+        },
+        "subnet001AddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "subnet address space prefix"
+            }
+        },
+        "subnet002AddressPrefix": {
+            "type": "string",
+            "metadata": {
+                "description": "subnet address space prefix"
+            }
+        }
+    },
+    "variables": {
+        "subnetName":"[concat(parameters('subnetValue'),'-',parameters('environmentPrefix'),'-')]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2020-06-01",
+            "name": "[parameters('vnetName')]",
+            "tags": "[parameters('resourceTags')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[parameters('vnetaddresSpacesValue')]"
+                    ]
+                },
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(parameters('vnetName'), '/',variables('subnetName'),'001')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('subnet001AddressPrefix')]",
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2020-11-01",
+            "name": "[concat(parameters('vnetName'),'/',variables('subnetName'),'002')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'),concat(variables('subnetName'),'001'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('subnet002AddressPrefix')]",
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        }
+    ],
+    "outputs": {
+    "storageEndpoint": {
+      "type": "object",
+      "value": "[reference(parameters('vnetName'))]"
+    }
+  }
+}

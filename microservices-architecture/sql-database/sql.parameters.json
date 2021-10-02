@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "sqlServerName": {
-            "value": "sql-workspace"
+            "value": "sql-workspace-qa"
         },
         "sqlDbName": {
-            "value": "sqldb-workspacemgmt"
+            "value": "sqldb-workspacemgmt-qa"
         },
         "adminPassword": {
             "value": "sR9n@z!wT7d2"
@@ -15,13 +15,13 @@
             "value": "adminUser"
         },
         "vnetName": {
-            "value": "vnet-dev-eastus-001"
+            "value": "vnet-qa-eastus-001"
         },
         "subnetName": {
-            "value": "snet-dev-002"
+            "value": "snet-qa-002"
         },
         "resourceGroupVnet": {
-            "value": "rg-shared-dev"
+            "value": "rg-shared-qa"
         },
         "privateEndpointName": {
             "value": "pl-workspacedb"

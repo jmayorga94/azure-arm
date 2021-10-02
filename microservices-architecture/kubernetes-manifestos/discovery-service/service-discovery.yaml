@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: s-discovery-service
+  namespace: development
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  selector:
+    app: discovery-service
+  ports:
+  - port: 80
+    targetPort: 80

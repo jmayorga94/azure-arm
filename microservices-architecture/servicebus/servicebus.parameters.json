@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serviceBusNamespaceName": {
-            "value": "sb-workspacemgmt"
+            "value": "sb-workspacemgmt-qa"
         },
         "analizerQueueName": {
             "value":"sbq-analizer-req" 

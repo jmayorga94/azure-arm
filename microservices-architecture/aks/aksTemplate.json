@@ -81,6 +81,12 @@
         "metadata": {
           "description": "The resource group where the vnet is"
         }
+      },
+      "maxPods": {
+        "type": "int",
+        "metadata": {
+          "description": "max pods in nodes for cluster"
+        }
       }
     },
     "variables": {
@@ -106,7 +112,7 @@
         "osDiskType": "Ephemeral",
         "kubeletDiskType": "OS",
         "vnetSubnetID": "[variables('subnetId')]",
-        "maxPods": 60,
+        "maxPods": "[parameters('maxPods')]",
         "osType": "[parameters('osType')]",
         "osSKU": "Ubuntu",
         "enableAutoScaling": false,

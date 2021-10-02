@@ -6,25 +6,28 @@
             "value": "eastus"
         },
         "clusterName": {
-            "value": "aks-dev-workspacemngmt"
+            "value": "aks-qa-workspacemgmt"
         },
         "vnetName": {
-            "value": "vnet-dev-eastus-001"
+            "value": "vnet-qa-eastus-001"
         },
         "subnetName": {
-            "value": "snet-dev-001"
+            "value": "snet-qa-001"
         },
         "egressIpName": {
-            "value": "pip-aks-dev-workspacemngmt-001"
+            "value": "pip-aks-qa-workspacemngmt-001"
         },
         "resourceGroupName": {
-            "value": "rg-workspacemgmt-dev"
+            "value": "rg-workspacemgmt-qa"
         },
         "resourceGroupVnet": {
-            "value": "rg-shared-dev"
+            "value": "rg-shared-qa"
         },
         "dnsPrefix": {
             "value":"-dns"
+    },
+    "maxPods": {
+        "value": 60
     }
 }
 }

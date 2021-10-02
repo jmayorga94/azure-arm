@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vnetName": {
+            "value": "vnet-qa-eastus-001"
+        },
+        "resourceTags": {
+            "value": {
+               "Environment": "QA",
+                "Project": "WorkspaceManagement"
+            }
+        },
+        "environmentPrefix": {
+            "value": "qa" 
+        },
+        "vnetaddresSpacesValue": {
+            "value": "192.168.20.0/24" 
+        },
+        "subnetValue": {
+            "value": "snet"
+        },
+        "subnet001AddressPrefix": {
+            "value": "192.168.20.0/25" 
+        },
+        "subnet002AddressPrefix": {
+            "value": "192.168.20.128/25"
+        }
+    }
+}

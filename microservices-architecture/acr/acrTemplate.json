@@ -1,0 +1,66 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "registryName": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "resourceTags": {
+            "type": "object"
+        },
+        "skuName": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ContainerRegistry/registries",
+            "apiVersion": "2021-06-01-preview",
+            "name": "[parameters('registryName')]",
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('resourceTags')]",
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('skuName')]"
+            },
+            "properties": {
+                "adminUserEnabled": false,
+                "policies": {
+                    "quarantinePolicy": {
+                        "status": "disabled"
+                    },
+                    "trustPolicy": {
+                        "type": "Notary",
+                        "status": "disabled"
+                    },
+                    "retentionPolicy": {
+                        "days": 7,
+                        "status": "disabled"
+                    },
+                    "exportPolicy": {
+                        "status": "enabled"
+                    }
+                },
+                "encryption": {
+                    "status": "disabled"
+                },
+                "dataEndpointEnabled": false,
+                "publicNetworkAccess": "Enabled",
+                "networkRuleBypassOptions": "AzureServices",
+                "zoneRedundancy": "Disabled",
+                "anonymousPullEnabled": false
+            }
+        }
+    ],
+    "outputs": {
+    "storageEndpoint": {
+      "type": "object",
+      "value": "[reference(parameters('registryName'))]"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: d-data-access-service
+  namespace: development
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: data-access-service
+  template:
+    metadata:
+      labels:
+        app: data-access-service
+    spec:
+      containers:
+      - name: data-access-service
+        image: crdevelopmenteastus001.azurecr.io/workspacemgmt/data-access-service:version1.0
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "250m"
+          limits:
+            memory: "500Mi"
+            cpu: "500m"            
+        ports:
+        - containerPort: 80
